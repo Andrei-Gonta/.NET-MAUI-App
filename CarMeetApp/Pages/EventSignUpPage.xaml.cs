@@ -16,16 +16,19 @@ public partial class EventSignUpPage : ContentPage, INotifyPropertyChanged
     private string? _selectedGenerationName;
     private string _horsepowerText = "Horsepower: -";
     private string _engineCapacityText = "Engine capacity: -";
+    private string _carPhotosCountText = "Car pictures selected: 0/5";
     private string _signUpStatus = string.Empty;
     private readonly CarDataService _carDataService = new();
     private readonly DatabaseService _databaseService = new();
     private List<CarGenerationOption> _generationOptions = [];
     private List<EventItem> _events = [];
+    private readonly List<string> _selectedCarPhotoPaths = [];
 
     public List<string> EventNames { get; private set; } = [];
     public ObservableCollection<string> CarBrands { get; } = [];
     public ObservableCollection<string> CarModels { get; } = [];
     public ObservableCollection<string> CarGenerations { get; } = [];
+    public ObservableCollection<string> SelectedCarPhotoNames { get; } = [];
 
     public new event PropertyChangedEventHandler? PropertyChanged;
 
@@ -81,6 +84,12 @@ public partial class EventSignUpPage : ContentPage, INotifyPropertyChanged
     {
         get => _signUpStatus;
         set => SetField(ref _signUpStatus, value);
+    }
+
+    public string CarPhotosCountText
+    {
+        get => _carPhotosCountText;
+        set => SetField(ref _carPhotosCountText, value);
     }
 
     public EventSignUpPage()
@@ -198,6 +207,12 @@ public partial class EventSignUpPage : ContentPage, INotifyPropertyChanged
             return;
         }
 
+        if (_selectedCarPhotoPaths.Count == 0)
+        {
+            SignUpStatus = "Please upload at least one car picture.";
+            return;
+        }
+
         try
         {
             // Get the selected event
@@ -248,12 +263,16 @@ public partial class EventSignUpPage : ContentPage, INotifyPropertyChanged
                 SelectedModel,
                 SelectedGenerationName,
                 selectedGeneration?.HorsepowerHp,
-                selectedGeneration?.EngineSizeLiters
+                selectedGeneration?.EngineSizeLiters,
+                _selectedCarPhotoPaths.ToList()
             );
 
             if (success)
             {
                 SignUpStatus = $"{FullName} joined {SelectedEventName} with {SelectedBrand} {SelectedModel} ({SelectedGenerationName}).";
+                _selectedCarPhotoPaths.Clear();
+                SelectedCarPhotoNames.Clear();
+                CarPhotosCountText = "Car pictures selected: 0/5";
             }
             else
             {
@@ -269,6 +288,67 @@ public partial class EventSignUpPage : ContentPage, INotifyPropertyChanged
     private async void OnBackClicked(object sender, EventArgs e)
     {
         await Navigation.PopAsync();
+    }
+
+    private async void OnUploadPhotosClicked(object sender, EventArgs e)
+    {
+        try
+        {
+            var remainingSlots = 5 - _selectedCarPhotoPaths.Count;
+            if (remainingSlots <= 0)
+            {
+                SignUpStatus = "Maximum 5 pictures allowed.";
+                return;
+            }
+
+            var files = await FilePicker.Default.PickMultipleAsync(new PickOptions
+            {
+                PickerTitle = "Select up to 5 car pictures",
+                FileTypes = FilePickerFileType.Images
+            });
+
+            if (files is null)
+            {
+                return;
+            }
+
+            var selected = files.Take(remainingSlots).ToList();
+            foreach (var file in selected)
+            {
+                var localPath = await SavePhotoLocallyAsync(file);
+                _selectedCarPhotoPaths.Add(localPath);
+                SelectedCarPhotoNames.Add(Path.GetFileName(localPath));
+            }
+
+            CarPhotosCountText = $"Car pictures selected: {_selectedCarPhotoPaths.Count}/5";
+            if (files.Count() > remainingSlots)
+            {
+                SignUpStatus = $"Only {remainingSlots} picture(s) were added (max 5).";
+            }
+            else
+            {
+                SignUpStatus = "Car pictures added.";
+            }
+        }
+        catch (Exception ex)
+        {
+            SignUpStatus = $"Could not upload pictures: {ex.Message}";
+        }
+    }
+
+    private static async Task<string> SavePhotoLocallyAsync(FileResult file)
+    {
+        var photosDir = Path.Combine(FileSystem.AppDataDirectory, "car_photos");
+        Directory.CreateDirectory(photosDir);
+
+        var extension = Path.GetExtension(file.FileName);
+        var safeExtension = string.IsNullOrWhiteSpace(extension) ? ".jpg" : extension;
+        var targetPath = Path.Combine(photosDir, $"{Guid.NewGuid()}{safeExtension}");
+
+        await using var source = await file.OpenReadAsync();
+        await using var destination = File.Create(targetPath);
+        await source.CopyToAsync(destination);
+        return targetPath;
     }
 
     private void SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = "")

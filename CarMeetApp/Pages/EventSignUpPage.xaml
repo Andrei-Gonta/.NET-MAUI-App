@@ -55,6 +55,24 @@
                 </VerticalStackLayout>
             </Border>
 
+            <Button Text="Upload Car Pictures (Max 5)"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Clicked="OnUploadPhotosClicked" />
+
+            <Label Text="{Binding CarPhotosCountText}"
+                   TextColor="#374151"
+                   FontAttributes="Bold" />
+
+            <CollectionView ItemsSource="{Binding SelectedCarPhotoNames}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Label Text="{Binding}" FontSize="12" TextColor="#6B7280" />
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
             <Button Text="Submit Sign Up"
                     BackgroundColor="{StaticResource Accent}"
                     TextColor="White"

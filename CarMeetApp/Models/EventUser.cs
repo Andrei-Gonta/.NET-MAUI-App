@@ -25,4 +25,7 @@ public class EventUser
     public int? CarHorsepowerHp { get; set; }
     
     public double? CarEngineSizeLiters { get; set; }
+
+    [StringLength(4000)]
+    public string CarPhotoPathsJson { get; set; } = "[]";
 }

@@ -9,6 +9,7 @@ namespace CarMeetApp.Pages;
 public partial class AdminEventDetailsPage : ContentPage, INotifyPropertyChanged
 {
     private readonly DatabaseService _databaseService = new();
+    private int _eventId;
     private EventItem? _event;
     private List<ParticipantViewModel> _participants = [];
 
@@ -32,6 +33,7 @@ public partial class AdminEventDetailsPage : ContentPage, INotifyPropertyChanged
 
     public AdminEventDetailsPage(int eventId) : this()
     {
+        _eventId = eventId;
         LoadEventDetails(eventId);
     }
 
@@ -69,6 +71,8 @@ public partial class AdminEventDetailsPage : ContentPage, INotifyPropertyChanged
             var eventUsers = await _databaseService.GetEventUserDetailsAsync(_event!.Id);
             _participants = eventUsers.Select(eu => new ParticipantViewModel
             {
+                EventId = eu.EventId,
+                UserId = eu.UserId,
                 FullName = eu.User.FullName,
                 Email = eu.User.Email,
                 PhoneNumber = eu.User.PhoneNumber,
@@ -87,6 +91,16 @@ public partial class AdminEventDetailsPage : ContentPage, INotifyPropertyChanged
         {
             await DisplayAlert("Error", $"Failed to load participants: {ex.Message}", "OK");
         }
+    }
+
+    private async void OnSeeCarClicked(object sender, EventArgs e)
+    {
+        if (sender is not Button button || button.CommandParameter is not ParticipantViewModel participant)
+        {
+            return;
+        }
+
+        await Navigation.PushAsync(new ParticipantCarPhotosPage(_eventId, participant.UserId, participant.FullName));
     }
 
     private string GetCarSpecs(int? horsepower, double? engineSize)
@@ -128,6 +142,8 @@ public partial class AdminEventDetailsPage : ContentPage, INotifyPropertyChanged
 
 public class ParticipantViewModel
 {
+    public int EventId { get; set; }
+    public int UserId { get; set; }
     public string FullName { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public string PhoneNumber { get; set; } = string.Empty;

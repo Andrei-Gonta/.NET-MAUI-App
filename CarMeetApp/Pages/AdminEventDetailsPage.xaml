@@ -93,6 +93,13 @@
                                 <Label Text="{Binding SignUpDate}"
                                        FontSize="12"
                                        TextColor="#9CA3AF" />
+
+                                <Button Text="See Car"
+                                        BackgroundColor="{StaticResource Accent}"
+                                        TextColor="White"
+                                        CornerRadius="8"
+                                        Clicked="OnSeeCarClicked"
+                                        CommandParameter="{Binding}" />
                             </VerticalStackLayout>
                         </Border>
                     </DataTemplate>

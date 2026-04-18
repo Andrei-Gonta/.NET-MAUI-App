@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using CarMeetApp.Data;
 using CarMeetApp.Models;
+using System.Text.Json;
 
 namespace CarMeetApp.Services;
 
@@ -12,11 +13,13 @@ public class DatabaseService
     {
         _context = new CarMeetDbContext();
         _context.Database.EnsureCreated();
+        EnsureEventUserPhotoColumn();
     }
 
     public DatabaseService(CarMeetDbContext context)
     {
         _context = context;
+        EnsureEventUserPhotoColumn();
     }
 
     // Event operations
@@ -93,7 +96,15 @@ public class DatabaseService
     }
 
     // Event sign-up operations
-    public async Task<bool> SignUpForEventAsync(string userEmail, int eventId, string carBrand, string carModel, string carGeneration, int? horsepower, double? engineSize)
+    public async Task<bool> SignUpForEventAsync(
+        string userEmail,
+        int eventId,
+        string carBrand,
+        string carModel,
+        string carGeneration,
+        int? horsepower,
+        double? engineSize,
+        List<string> carPhotoPaths)
     {
         var user = await GetUserByEmailAsync(userEmail);
         if (user == null)
@@ -124,7 +135,8 @@ public class DatabaseService
             CarModel = carModel,
             CarGeneration = carGeneration,
             CarHorsepowerHp = horsepower,
-            CarEngineSizeLiters = engineSize
+            CarEngineSizeLiters = engineSize,
+            CarPhotoPathsJson = JsonSerializer.Serialize(carPhotoPaths ?? [])
         };
 
         _context.EventUsers.Add(eventUser);
@@ -182,6 +194,39 @@ public class DatabaseService
             .Include(eu => eu.User)
             .OrderBy(eu => eu.User.FullName)
             .ToListAsync();
+    }
+
+    public async Task<List<string>> GetParticipantCarPhotosAsync(int eventId, int userId)
+    {
+        var eventUser = await _context.EventUsers
+            .AsNoTracking()
+            .FirstOrDefaultAsync(eu => eu.EventId == eventId && eu.UserId == userId);
+
+        if (eventUser is null || string.IsNullOrWhiteSpace(eventUser.CarPhotoPathsJson))
+        {
+            return [];
+        }
+
+        try
+        {
+            return JsonSerializer.Deserialize<List<string>>(eventUser.CarPhotoPathsJson) ?? [];
+        }
+        catch
+        {
+            return [];
+        }
+    }
+
+    private void EnsureEventUserPhotoColumn()
+    {
+        try
+        {
+            _context.Database.ExecuteSqlRaw("ALTER TABLE EventUsers ADD COLUMN CarPhotoPathsJson TEXT NOT NULL DEFAULT '[]';");
+        }
+        catch
+        {
+            // Column already exists or provider does not support this operation.
+        }
     }
 
     public void Dispose()
