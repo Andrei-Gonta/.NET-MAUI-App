@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarMeetApp.Pages.AdminEventDetailsPage"
+             Title="Event Participants">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+            
+            <!-- Event Information -->
+            <Border BackgroundColor="#F3F4F6"
+                    Padding="16"
+                    StrokeShape="RoundRectangle 12">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="{Binding EventTitle}"
+                           FontSize="24"
+                           FontAttributes="Bold"
+                           TextColor="{StaticResource Primary}" />
+                    
+                    <Label Text="{Binding EventLocation}"
+                           FontSize="16"
+                           TextColor="#6B7280" />
+                    
+                    <Label Text="{Binding EventDate}"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    
+                    <Label Text="{Binding EventOrganizer}"
+                           FontSize="14"
+                           TextColor="#6B7280" />
+                    
+                    <Label Text="{Binding EventDescription}"
+                           FontSize="14"
+                           TextColor="#374151"
+                           LineBreakMode="WordWrap" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- Participants Count -->
+            <Border BackgroundColor="#EBF8FF"
+                    Padding="12"
+                    StrokeShape="RoundRectangle 8">
+                <Label Text="{Binding ParticipantsCount}"
+                       FontSize="16"
+                       FontAttributes="Bold"
+                       TextColor="#1E40AF" />
+            </Border>
+
+            <!-- Participants List -->
+            <CollectionView ItemsSource="{Binding Participants}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BackgroundColor="White"
+                                Padding="16"
+                                Margin="0,4"
+                                Stroke="#E5E7EB"
+                                StrokeShape="RoundRectangle 8">
+                            <VerticalStackLayout Spacing="8">
+                                <!-- User Information -->
+                                <Label Text="{Binding FullName}"
+                                       FontSize="16"
+                                       FontAttributes="Bold"
+                                       TextColor="#111827" />
+                                
+                                <Label Text="{Binding Email}"
+                                       FontSize="14"
+                                       TextColor="#6B7280" />
+                                
+                                <Label Text="{Binding PhoneNumber}"
+                                       FontSize="14"
+                                       TextColor="#6B7280" />
+                                
+                                <!-- Car Information -->
+                                <Border BackgroundColor="#F9FAFB"
+                                        Padding="8"
+                                        StrokeShape="RoundRectangle 6">
+                                    <VerticalStackLayout Spacing="4">
+                                        <Label Text="Car Details"
+                                               FontSize="12"
+                                               FontAttributes="Bold"
+                                               TextColor="#374151" />
+                                        
+                                        <Label Text="{Binding CarInfo}"
+                                               FontSize="14"
+                                               TextColor="#111827" />
+                                        
+                                        <Label Text="{Binding CarSpecs}"
+                                               FontSize="12"
+                                               TextColor="#6B7280" />
+                                    </VerticalStackLayout>
+                                </Border>
+                                
+                                <!-- Sign-up Date -->
+                                <Label Text="{Binding SignUpDate}"
+                                       FontSize="12"
+                                       TextColor="#9CA3AF" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <!-- No Participants Message -->
+            <Label Text="No participants have signed up for this event yet."
+                   FontSize="16"
+                   TextColor="#6B7280"
+                   HorizontalOptions="Center"
+                   IsVisible="{Binding HasNoParticipants}" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

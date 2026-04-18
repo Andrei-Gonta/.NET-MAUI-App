@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarMeetApp.Pages.UserProfilePage"
+             Title="Profile">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14">
+            <Label Text="User Profile"
+                   FontSize="26"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Primary}" />
+
+            <Border BackgroundColor="#F9FAFB"
+                    Padding="14"
+                    StrokeShape="RoundRectangle 12">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="{Binding Profile.FullName}" FontSize="22" FontAttributes="Bold" />
+                    <Label Text="{Binding Profile.Username}" TextColor="#6B7280" />
+                    <Label Text="{Binding Profile.FavoriteCar, StringFormat='Favorite Car: {0}'}" />
+                    <Label Text="{Binding Profile.MeetCount, StringFormat='Meets Joined: {0}'}" />
+                    <Label Text="{Binding Profile.Bio}" />
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

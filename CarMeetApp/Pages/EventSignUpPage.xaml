@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarMeetApp.Pages.EventSignUpPage"
+             Title="Event Sign Up">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14">
+            
+            <Button Text="Back"
+                    BackgroundColor="#6B7280"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Clicked="OnBackClicked"
+                    HorizontalOptions="Start" />
+            <Label Text="Register for an Event"
+                   FontSize="26"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Primary}" />
+
+            <Picker Title="Choose event"
+                    ItemsSource="{Binding EventNames}"
+                    SelectedItem="{Binding SelectedEventName}" />
+
+            <Entry Placeholder="Your full name"
+                   Text="{Binding FullName}" />
+
+            <Entry Placeholder="Phone number"
+                   Keyboard="Telephone"
+                   Text="{Binding PhoneNumber}" />
+
+            <Picker x:Name="BrandPicker"
+                    Title="Choose brand"
+                    ItemsSource="{Binding CarBrands}"
+                    SelectedItem="{Binding SelectedBrand}"
+                    SelectedIndexChanged="OnBrandChanged" />
+
+            <Picker x:Name="ModelPicker"
+                    Title="Choose model"
+                    ItemsSource="{Binding CarModels}"
+                    SelectedItem="{Binding SelectedModel}"
+                    SelectedIndexChanged="OnModelChanged" />
+
+            <Picker x:Name="GenerationPicker"
+                    Title="Choose generation"
+                    ItemsSource="{Binding CarGenerations}"
+                    SelectedItem="{Binding SelectedGenerationName}"
+                    SelectedIndexChanged="OnGenerationChanged" />
+
+            <Border BackgroundColor="#F3F4F6"
+                    Padding="10"
+                    StrokeShape="RoundRectangle 10">
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="{Binding HorsepowerText}" FontAttributes="Bold" />
+                    <Label Text="{Binding EngineCapacityText}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="Submit Sign Up"
+                    BackgroundColor="{StaticResource Accent}"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Clicked="OnSubmitClicked" />
+
+            <Label Text="{Binding SignUpStatus}"
+                   TextColor="#047857"
+                   FontAttributes="Bold" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

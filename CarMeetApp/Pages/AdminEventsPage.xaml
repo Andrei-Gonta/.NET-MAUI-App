@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarMeetApp.Pages.AdminEventsPage"
+             Title="Admin - Events">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+            
+            <Label Text="Admin Event Management"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Primary}" />
+
+            <Label Text="View and manage event participants"
+                   FontSize="16"
+                   TextColor="#6B7280" />
+
+            <CollectionView ItemsSource="{Binding Events}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BackgroundColor="#F3F4F6"
+                                Padding="16"
+                                Margin="0,0,0,12"
+                                StrokeShape="RoundRectangle 12">
+                            <VerticalStackLayout Spacing="8">
+                                <Label Text="{Binding Title}"
+                                       FontAttributes="Bold"
+                                       FontSize="18"
+                                       TextColor="#111827" />
+                                
+                                <Label Text="{Binding Location}"
+                                       FontSize="14"
+                                       TextColor="#6B7280" />
+                                
+                                <Label Text="{Binding Date, StringFormat='Date: {0:dddd, MMMM d, yyyy - h:mm tt}'}"
+                                       FontSize="14"
+                                       TextColor="#6B7280" />
+                                
+                                <Label Text="{Binding Organizer}"
+                                       FontSize="14"
+                                       TextColor="#6B7280" />
+                                
+                                <Button Text="View Participants"
+                                        BackgroundColor="{StaticResource Accent}"
+                                        TextColor="White"
+                                        CornerRadius="8"
+                                        Clicked="OnViewParticipantsClicked"
+                                        CommandParameter="{Binding Id}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

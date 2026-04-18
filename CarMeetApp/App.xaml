@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Application xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarMeetApp.App">
+    <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Primary">#1F3A5F</Color>
+            <Color x:Key="Accent">#F97316</Color>
+            <Style TargetType="Label">
+                <Setter Property="TextColor" Value="#1F2937" />
+            </Style>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
