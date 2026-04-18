@@ -54,4 +54,50 @@ public partial class AdminEventsPage : ContentPage
             await Navigation.PushAsync(new AdminEventDetailsPage(eventId));
         }
     }
+
+    private async void OnEditEventClicked(object sender, EventArgs e)
+    {
+        if (sender is Button button && button.CommandParameter is int eventId)
+        {
+            await Navigation.PushAsync(new AdminEditEventPage(eventId));
+        }
+    }
+
+    private async void OnDeleteEventClicked(object sender, EventArgs e)
+    {
+        if (sender is not Button button || button.CommandParameter is not int eventId)
+        {
+            return;
+        }
+
+        var eventToDelete = Events.FirstOrDefault(x => x.Id == eventId);
+        var eventName = eventToDelete?.Title ?? "this event";
+
+        var confirm = await DisplayAlert(
+            "Delete Event",
+            $"Are you sure you want to delete '{eventName}'?",
+            "Delete",
+            "Cancel");
+
+        if (!confirm)
+        {
+            return;
+        }
+
+        try
+        {
+            var deleted = await _databaseService.DeleteEventAsync(eventId);
+            if (!deleted)
+            {
+                await DisplayAlert("Error", "Event could not be deleted.", "OK");
+                return;
+            }
+
+            await LoadEvents();
+        }
+        catch (Exception ex)
+        {
+            await DisplayAlert("Error", $"Failed to delete event: {ex.Message}", "OK");
+        }
+    }
 }

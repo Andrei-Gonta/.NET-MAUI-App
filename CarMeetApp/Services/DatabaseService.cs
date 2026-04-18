@@ -22,12 +22,16 @@ public class DatabaseService
     // Event operations
     public async Task<List<EventItem>> GetEventsAsync()
     {
-        return await _context.Events.OrderBy(e => e.Date).ToListAsync();
+        return await _context.Events
+            .AsNoTracking()
+            .OrderBy(e => e.Date)
+            .ToListAsync();
     }
 
     public async Task<EventItem?> GetEventByIdAsync(int id)
     {
         return await _context.Events
+            .AsNoTracking()
             .Include(e => e.EventUsers)
             .ThenInclude(eu => eu.User)
             .FirstOrDefaultAsync(e => e.Id == id);

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarMeetApp.Pages.AdminEditEventPage"
+             Title="Edit Event">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="12">
+            <Label Text="Edit Event"
+                   FontSize="26"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Primary}" />
+
+            <Entry Placeholder="Event title" Text="{Binding TitleInput}" />
+            <Entry Placeholder="Location" Text="{Binding LocationInput}" />
+            <Entry Placeholder="Organizer" Text="{Binding OrganizerInput}" />
+            <DatePicker Date="{Binding EventDate}" />
+            <TimePicker Time="{Binding EventTime}" />
+            <Editor Placeholder="Description"
+                    HeightRequest="120"
+                    Text="{Binding DescriptionInput}" />
+
+            <Button Text="Save Changes"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Clicked="OnSaveClicked" />
+
+            <Label Text="{Binding StatusMessage}"
+                   FontAttributes="Bold"
+                   TextColor="#047857" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

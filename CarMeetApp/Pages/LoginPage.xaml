@@ -10,7 +10,7 @@
                    FontAttributes="Bold"
                    TextColor="{StaticResource Primary}" />
 
-            <Label Text="Use email@user.com (regular) or email@admin.com (admin)."
+            <Label Text="Sign in with Firebase. Regular users end with @email.com, admins end with @admin.com."
                    TextColor="#6B7280" />
 
             <Entry Placeholder="Email" Keyboard="Email" Text="{Binding Email}" />
@@ -20,6 +20,7 @@
                     BackgroundColor="{StaticResource Primary}"
                     TextColor="White"
                     CornerRadius="10"
+                    IsEnabled="{Binding IsNotBusy}"
                     Clicked="OnLoginClicked" />
 
             <Label Text="{Binding LoginStatus}"

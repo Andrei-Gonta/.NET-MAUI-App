@@ -46,6 +46,20 @@
                                         CornerRadius="8"
                                         Clicked="OnViewParticipantsClicked"
                                         CommandParameter="{Binding Id}" />
+
+                                <Button Text="Edit Event"
+                                        BackgroundColor="{StaticResource Primary}"
+                                        TextColor="White"
+                                        CornerRadius="8"
+                                        Clicked="OnEditEventClicked"
+                                        CommandParameter="{Binding Id}" />
+
+                                <Button Text="Delete Event"
+                                        BackgroundColor="#DC2626"
+                                        TextColor="White"
+                                        CornerRadius="8"
+                                        Clicked="OnDeleteEventClicked"
+                                        CommandParameter="{Binding Id}" />
                             </VerticalStackLayout>
                         </Border>
                     </DataTemplate>
