@@ -24,9 +24,7 @@ public class EventItem
     
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     
-    // Navigation properties
     public virtual ICollection<EventUser> EventUsers { get; set; } = new List<EventUser>();
-    
-    // Helper property to get users who signed up
+
     public virtual ICollection<User> SignedUpUsers => EventUsers.Select(eu => eu.User).ToList();
 }

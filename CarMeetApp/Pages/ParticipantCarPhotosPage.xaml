@@ -5,6 +5,13 @@
              Title="Participant Car Photos">
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="14">
+            <Button Text="Back"
+                    BackgroundColor="#374151"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Clicked="OnBackClicked"
+                    HorizontalOptions="Start" />
+
             <Label Text="{Binding HeaderText}"
                    FontSize="22"
                    FontAttributes="Bold"
@@ -27,7 +34,7 @@
 
             <Label Text="No car pictures uploaded for this participant."
                    HorizontalOptions="Center"
-                   TextColor="#6B7280"
+                   TextColor="{StaticResource TextSecondary}"
                    IsVisible="{Binding HasNoPhotos}" />
         </VerticalStackLayout>
     </ScrollView>

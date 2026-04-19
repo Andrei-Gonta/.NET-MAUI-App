@@ -6,16 +6,14 @@
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="16">
             
-            <!-- Back Button -->
             <Button Text="Back"
-                    BackgroundColor="#6B7280"
+                    BackgroundColor="#374151"
                     TextColor="White"
                     CornerRadius="8"
                     Clicked="OnBackClicked"
                     HorizontalOptions="Start" />
 
-            <!-- Event Information -->
-            <Border BackgroundColor="#F3F4F6"
+            <Border BackgroundColor="{StaticResource CardBackground}"
                     Padding="16"
                     StrokeShape="RoundRectangle 12">
                 <VerticalStackLayout Spacing="8">
@@ -26,97 +24,91 @@
                     
                     <Label Text="{Binding EventLocation}"
                            FontSize="16"
-                           TextColor="#6B7280" />
+                           TextColor="{StaticResource TextSecondary}" />
                     
                     <Label Text="{Binding EventDate}"
                            FontSize="14"
-                           TextColor="#6B7280" />
+                           TextColor="{StaticResource TextSecondary}" />
                     
                     <Label Text="{Binding EventOrganizer}"
                            FontSize="14"
-                           TextColor="#6B7280" />
+                           TextColor="{StaticResource TextSecondary}" />
                     
                     <Label Text="{Binding EventDescription}"
                            FontSize="14"
-                           TextColor="#374151"
+                           TextColor="{StaticResource TextPrimary}"
                            LineBreakMode="WordWrap" />
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Participants Section -->
-            <Border BackgroundColor="#EBF8FF"
+            <Border BackgroundColor="{StaticResource CardBackground}"
                     Padding="16"
                     StrokeShape="RoundRectangle 12">
                 <VerticalStackLayout Spacing="8">
                     <Label Text="Participants"
                            FontSize="20"
                            FontAttributes="Bold"
-                           TextColor="#1E40AF" />
+                           TextColor="{StaticResource TextPrimary}" />
                     
                     <Label Text="{Binding ParticipantsCount}"
                            FontSize="16"
-                           TextColor="#1E40AF" />
+                           TextColor="{StaticResource TextPrimary}" />
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Participants List -->
             <CollectionView ItemsSource="{Binding Participants}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border BackgroundColor="White"
+                        <Border BackgroundColor="{StaticResource CardBackground}"
                                 Padding="16"
                                 Margin="0,4"
                                 Stroke="#E5E7EB"
                                 StrokeShape="RoundRectangle 8">
                             <VerticalStackLayout Spacing="8">
-                                <!-- User Information -->
                                 <Label Text="{Binding FullName}"
                                        FontSize="16"
                                        FontAttributes="Bold"
-                                       TextColor="#111827" />
+                                       TextColor="{StaticResource TextPrimary}" />
                                 
                                 <Label Text="{Binding Email}"
                                        FontSize="14"
-                                       TextColor="#6B7280" />
+                                       TextColor="{StaticResource TextSecondary}" />
                                 
                                 <Label Text="{Binding PhoneNumber}"
                                        FontSize="14"
-                                       TextColor="#6B7280" />
+                                       TextColor="{StaticResource TextSecondary}" />
                                 
-                                <!-- Car Information -->
-                                <Border BackgroundColor="#F9FAFB"
+                                <Border BackgroundColor="{StaticResource CardBackground}"
                                         Padding="8"
                                         StrokeShape="RoundRectangle 6">
                                     <VerticalStackLayout Spacing="4">
                                         <Label Text="Car Details"
                                                FontSize="12"
                                                FontAttributes="Bold"
-                                               TextColor="#374151" />
+                                               TextColor="{StaticResource TextPrimary}" />
                                         
                                         <Label Text="{Binding CarInfo}"
                                                FontSize="14"
-                                               TextColor="#111827" />
+                                               TextColor="{StaticResource TextPrimary}" />
                                         
                                         <Label Text="{Binding CarSpecs}"
                                                FontSize="12"
-                                               TextColor="#6B7280" />
+                                               TextColor="{StaticResource TextSecondary}" />
                                     </VerticalStackLayout>
                                 </Border>
                                 
-                                <!-- Sign-up Date -->
                                 <Label Text="{Binding SignUpDate}"
                                        FontSize="12"
-                                       TextColor="#9CA3AF" />
+                                       TextColor="{StaticResource TextSecondary}" />
                             </VerticalStackLayout>
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-            <!-- No Participants Message -->
             <Label Text="No participants have signed up for this event yet."
                    FontSize="16"
-                   TextColor="#6B7280"
+                   TextColor="{StaticResource TextSecondary}"
                    HorizontalOptions="Center"
                    IsVisible="{Binding HasNoParticipants}" />
 

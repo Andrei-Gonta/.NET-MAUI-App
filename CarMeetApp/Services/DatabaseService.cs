@@ -14,15 +14,16 @@ public class DatabaseService
         _context = new CarMeetDbContext();
         _context.Database.EnsureCreated();
         EnsureEventUserPhotoColumn();
+        EnsureUserProfileColumns();
     }
 
     public DatabaseService(CarMeetDbContext context)
     {
         _context = context;
         EnsureEventUserPhotoColumn();
+        EnsureUserProfileColumns();
     }
 
-    // Event operations
     public async Task<List<EventItem>> GetEventsAsync()
     {
         return await _context.Events
@@ -44,10 +45,9 @@ public class DatabaseService
     {
         eventItem.CreatedAt = DateTime.UtcNow;
         
-        // Ensure Organizer field is set
         if (string.IsNullOrWhiteSpace(eventItem.Organizer))
         {
-            eventItem.Organizer = "Admin Team"; // Default fallback
+            eventItem.Organizer = "Admin Team";
         }
         
         _context.Events.Add(eventItem);
@@ -63,16 +63,26 @@ public class DatabaseService
 
     public async Task<bool> DeleteEventAsync(int id)
     {
-        var eventItem = await _context.Events.FindAsync(id);
-        if (eventItem != null)
+        try
         {
-            _context.Events.Remove(eventItem);
-            return await _context.SaveChangesAsync() > 0;
+            await _context.Database.ExecuteSqlInterpolatedAsync(
+                $"UPDATE Users SET EventItemId = NULL WHERE EventItemId = {id}");
         }
-        return false;
+        catch
+        {
+        }
+
+        await _context.EventUsers
+            .Where(eu => eu.EventId == id)
+            .ExecuteDeleteAsync();
+
+        var deletedEvents = await _context.Events
+            .Where(e => e.Id == id)
+            .ExecuteDeleteAsync();
+
+        return deletedEvents > 0;
     }
 
-    // User operations
     public async Task<User?> GetUserByEmailAsync(string email)
     {
         return await _context.Users
@@ -95,7 +105,6 @@ public class DatabaseService
         return await _context.SaveChangesAsync() > 0;
     }
 
-    // Event sign-up operations
     public async Task<bool> SignUpForEventAsync(
         string userEmail,
         int eventId,
@@ -118,13 +127,12 @@ public class DatabaseService
             return false;
         }
 
-        // Check if user is already signed up
         var existingSignUp = await _context.EventUsers
             .FirstOrDefaultAsync(eu => eu.UserId == user.Id && eu.EventId == eventId);
 
         if (existingSignUp != null)
         {
-            return false; // Already signed up
+            return false;
         }
 
         var eventUser = new EventUser
@@ -225,7 +233,27 @@ public class DatabaseService
         }
         catch
         {
-            // Column already exists or provider does not support this operation.
+        }
+    }
+
+    private void EnsureUserProfileColumns()
+    {
+        TryAddUserColumn("ALTER TABLE Users ADD COLUMN Location TEXT NOT NULL DEFAULT 'N/A';");
+        TryAddUserColumn("ALTER TABLE Users ADD COLUMN Age TEXT NOT NULL DEFAULT 'N/A';");
+        TryAddUserColumn("ALTER TABLE Users ADD COLUMN SocialLinks TEXT NOT NULL DEFAULT 'N/A';");
+        TryAddUserColumn("ALTER TABLE Users ADD COLUMN AvatarPhotoPath TEXT NOT NULL DEFAULT '';");
+        TryAddUserColumn("ALTER TABLE Users ADD COLUMN ShortDescription TEXT NOT NULL DEFAULT 'N/A';");
+        TryAddUserColumn("ALTER TABLE Users ADD COLUMN CarDescription TEXT NOT NULL DEFAULT 'N/A';");
+    }
+
+    private void TryAddUserColumn(string sql)
+    {
+        try
+        {
+            _context.Database.ExecuteSqlRaw(sql);
+        }
+        catch
+        {
         }
     }
 

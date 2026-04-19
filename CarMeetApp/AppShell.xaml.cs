@@ -15,11 +15,8 @@ public partial class AppShell : Shell
     private async void OnLogoutClicked(object sender, EventArgs e)
     {
         UserSession.Logout();
-        
-        // Navigate back to login page
         Application.Current.MainPage = new NavigationPage(new LoginPage());
-        
-        // Force refresh of tabs
+
         BuildRoleTabs();
     }
 
@@ -28,7 +25,7 @@ public partial class AppShell : Shell
         var tabBar = new TabBar();
 
         tabBar.Items.Add(CreateTab("Home", typeof(HomePage)));
-        tabBar.Items.Add(CreateTab("Details", typeof(EventDetailsPage)));
+        tabBar.Items.Add(CreateTab("Events", typeof(EventsPage)));
 
         if (UserSession.Role == UserRole.RegularUser)
         {

@@ -12,7 +12,6 @@ public class EventUser
     
     public DateTime SignedUpAt { get; set; } = DateTime.UtcNow;
     
-    // Additional information about the car used for this event
     [StringLength(50)]
     public string CarBrand { get; set; } = string.Empty;
     

@@ -21,7 +21,6 @@ public class CarMeetDbContext : DbContext
     {
         if (!optionsBuilder.IsConfigured)
         {
-            // Use SQLite for development
             try
             {
                 var databasePath = Path.Combine(FileSystem.AppDataDirectory, "CarMeetApp.db");
@@ -29,11 +28,9 @@ public class CarMeetDbContext : DbContext
             }
             catch
             {
-                // Fallback for design-time (when running migrations)
                 optionsBuilder.UseSqlite("Data Source=CarMeetApp.db");
             }
-            
-            // Suppress pending model changes warning for database update
+
             optionsBuilder.ConfigureWarnings(warnings => 
                 warnings.Ignore(Microsoft.EntityFrameworkCore.Diagnostics.RelationalEventId.PendingModelChangesWarning));
         }
@@ -43,7 +40,6 @@ public class CarMeetDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Configure EventUser many-to-many relationship
         modelBuilder.Entity<EventUser>()
             .HasKey(eu => new { eu.EventId, eu.UserId });
 
@@ -57,7 +53,6 @@ public class CarMeetDbContext : DbContext
             .WithMany(u => u.EventUsers)
             .HasForeignKey(eu => eu.UserId);
 
-        // Seed initial events
         modelBuilder.Entity<EventItem>().HasData(
             new EventItem
             {

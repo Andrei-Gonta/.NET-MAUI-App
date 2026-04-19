@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CarMeetApp.Models;
 using CarMeetApp.Services;
@@ -6,21 +5,19 @@ using System.Collections.ObjectModel;
 
 namespace CarMeetApp.Pages;
 
-public partial class UniversalEventDetailsPage : ContentPage, INotifyPropertyChanged
+public partial class UniversalEventDetailsPage : ContentPage
 {
     private readonly DatabaseService _databaseService = new();
+    private int _eventId;
     private EventItem? _event;
-    private List<ParticipantViewModel> _participants = [];
-
-    public new event PropertyChangedEventHandler? PropertyChanged;
 
     public string EventTitle => _event?.Title ?? string.Empty;
     public string EventLocation => _event?.Location ?? string.Empty;
     public string EventDate => _event?.Date.ToString("dddd, MMMM d, yyyy 'at' h:mm tt") ?? string.Empty;
-    public string EventOrganizer => $"Organized by {_event?.Organizer ?? "Unknown"}";
+    public string EventOrganizer => $"Organized by {Normalize(_event?.Organizer, "Admin Team")}";
     public string EventDescription => _event?.Description ?? string.Empty;
-    public string ParticipantsCount => $"{_participants.Count} Participant{_participants.Count.Pluralize()}";
-    public bool HasNoParticipants => _participants.Count == 0;
+    public string ParticipantsCount => $"{Participants.Count} Participant{Participants.Count.Pluralize()}";
+    public bool HasNoParticipants => Participants.Count == 0;
 
     public ObservableCollection<ParticipantViewModel> Participants { get; } = [];
 
@@ -32,10 +29,22 @@ public partial class UniversalEventDetailsPage : ContentPage, INotifyPropertyCha
 
     public UniversalEventDetailsPage(int eventId) : this()
     {
-        LoadEventDetails(eventId);
+        _eventId = eventId;
     }
 
-    private async void LoadEventDetails(int eventId)
+    protected override async void OnAppearing()
+    {
+        base.OnAppearing();
+
+        if (_eventId <= 0)
+        {
+            return;
+        }
+
+        await LoadEventDetailsAsync(_eventId);
+    }
+
+    private async Task LoadEventDetailsAsync(int eventId)
     {
         try
         {
@@ -47,12 +56,8 @@ public partial class UniversalEventDetailsPage : ContentPage, INotifyPropertyCha
                 return;
             }
 
-            // Debug: Check what organizer value we got
-            System.Diagnostics.Debug.WriteLine($"Event Organizer: '{_event.Organizer}' (ID: {_event.Id})");
-
             await LoadParticipants();
             
-            // Force refresh of all properties to ensure UI updates
             OnPropertyChanged(nameof(EventTitle));
             OnPropertyChanged(nameof(EventLocation));
             OnPropertyChanged(nameof(EventDate));
@@ -72,7 +77,7 @@ public partial class UniversalEventDetailsPage : ContentPage, INotifyPropertyCha
         try
         {
             var eventUsers = await _databaseService.GetEventUserDetailsAsync(_event!.Id);
-            _participants = eventUsers.Select(eu => new ParticipantViewModel
+            var mappedParticipants = eventUsers.Select(eu => new ParticipantViewModel
             {
                 FullName = eu.User.FullName,
                 Email = eu.User.Email,
@@ -83,10 +88,13 @@ public partial class UniversalEventDetailsPage : ContentPage, INotifyPropertyCha
             }).ToList();
 
             Participants.Clear();
-            foreach (var participant in _participants)
+            foreach (var participant in mappedParticipants)
             {
                 Participants.Add(participant);
             }
+
+            OnPropertyChanged(nameof(ParticipantsCount));
+            OnPropertyChanged(nameof(HasNoParticipants));
         }
         catch (Exception ex)
         {
@@ -112,14 +120,7 @@ public partial class UniversalEventDetailsPage : ContentPage, INotifyPropertyCha
         await Navigation.PopAsync();
     }
 
-    private void SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
-    {
-        if (EqualityComparer<T>.Default.Equals(field, value))
-        {
-            return;
-        }
+    private static string Normalize(string? value, string fallback) =>
+        string.IsNullOrWhiteSpace(value) ? fallback : value;
 
-        field = value;
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    }
 }

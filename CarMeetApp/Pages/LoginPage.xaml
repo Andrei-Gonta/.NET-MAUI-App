@@ -11,7 +11,7 @@
                    TextColor="{StaticResource Primary}" />
 
             <Label Text="Sign in with Firebase. Regular users end with @email.com, admins end with @admin.com."
-                   TextColor="#6B7280" />
+                   TextColor="{StaticResource TextSecondary}" />
 
             <Entry Placeholder="Email" Keyboard="Email" Text="{Binding Email}" />
             <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" />
@@ -24,7 +24,7 @@
                     Clicked="OnLoginClicked" />
 
             <Label Text="{Binding LoginStatus}"
-                   TextColor="#047857"
+                   TextColor="{StaticResource TextPrimary}"
                    FontAttributes="Bold" />
         </VerticalStackLayout>
     </ScrollView>

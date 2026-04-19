@@ -215,7 +215,6 @@ public partial class EventSignUpPage : ContentPage, INotifyPropertyChanged
 
         try
         {
-            // Get the selected event
             var selectedEvent = _events.FirstOrDefault(x => x.Title.ToLower() == SelectedEventName.ToLower());
             if (selectedEvent == null)
             {
@@ -223,7 +222,6 @@ public partial class EventSignUpPage : ContentPage, INotifyPropertyChanged
                 return;
             }
 
-            // Get or create user
             var user = await _databaseService.GetUserByEmailAsync(UserSession.Email);
             if (user == null)
             {
@@ -243,7 +241,6 @@ public partial class EventSignUpPage : ContentPage, INotifyPropertyChanged
             }
             else
             {
-                // Update existing user with new information
                 user.FullName = FullName;
                 user.PhoneNumber = PhoneNumber;
                 user.SelectedBrand = SelectedBrand;
@@ -254,7 +251,6 @@ public partial class EventSignUpPage : ContentPage, INotifyPropertyChanged
                 await _databaseService.UpdateUserAsync(user);
             }
 
-            // Sign up for event
             var selectedGeneration = _generationOptions.FirstOrDefault(x => x.Generation == SelectedGenerationName);
             var success = await _databaseService.SignUpForEventAsync(
                 UserSession.Email,

@@ -7,7 +7,7 @@
         <VerticalStackLayout Padding="20" Spacing="14">
             
             <Button Text="Back"
-                    BackgroundColor="#6B7280"
+                    BackgroundColor="#374151"
                     TextColor="White"
                     CornerRadius="8"
                     Clicked="OnBackClicked"
@@ -32,7 +32,7 @@
 
             <Label Text="{Binding StatusMessage}"
                    FontAttributes="Bold"
-                   TextColor="#047857" />
+                   TextColor="{StaticResource TextPrimary}" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

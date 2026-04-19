@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarMeetApp.Pages.EditUserProfilePage"
+             Title="Edit Profile">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="10">
+            <Button Text="Back"
+                    BackgroundColor="#374151"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Clicked="OnBackClicked"
+                    HorizontalOptions="Start" />
+
+            <Label Text="Edit Profile"
+                   FontSize="26"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource Primary}" />
+
+            <Label Text="Avatar photo" FontAttributes="Bold" />
+            <Image Source="{Binding AvatarPhotoPath}"
+                   HeightRequest="120"
+                   WidthRequest="120"
+                   Aspect="AspectFill"
+                   HorizontalOptions="Center"
+                   IsVisible="{Binding HasAvatar}" />
+            <Label Text="Avatar: empty"
+                   HorizontalOptions="Center"
+                   TextColor="{StaticResource TextSecondary}"
+                   IsVisible="{Binding HasNoAvatar}" />
+            <Button Text="Choose Avatar Photo"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Clicked="OnChooseAvatarClicked" />
+
+            <Label Text="Name" FontAttributes="Bold" />
+            <Entry Placeholder="Name" Text="{Binding FullName}" />
+
+            <Label Text="Location" FontAttributes="Bold" />
+            <Entry Placeholder="Location" Text="{Binding Location}" />
+
+            <Label Text="Age" FontAttributes="Bold" />
+            <Entry Placeholder="Age" Keyboard="Numeric" Text="{Binding Age}" />
+
+            <Label Text="Social links" FontAttributes="Bold" />
+            <Entry Placeholder="Social links" Text="{Binding SocialLinks}" />
+
+            <Label Text="Phone number" FontAttributes="Bold" />
+            <Entry Placeholder="Phone number" Keyboard="Telephone" Text="{Binding PhoneNumber}" />
+
+            <Label Text="Short description" FontAttributes="Bold" />
+            <Editor Placeholder="Short description"
+                    HeightRequest="100"
+                    Text="{Binding ShortDescription}" />
+
+            <Label Text="Your car" FontAttributes="Bold" />
+            <Entry Placeholder="Your car" Text="{Binding CarDescription}" />
+
+            <Button Text="Save Profile"
+                    BackgroundColor="{StaticResource Accent}"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Clicked="OnSaveClicked" />
+
+            <Label Text="{Binding StatusMessage}"
+                   TextColor="{StaticResource TextPrimary}"
+                   FontAttributes="Bold" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

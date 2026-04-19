@@ -5,20 +5,47 @@
              Title="Profile">
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="14">
-            <Label Text="User Profile"
+            <Button Text="Back"
+                    BackgroundColor="#374151"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Clicked="OnBackClicked"
+                    HorizontalOptions="Start" />
+
+            <Label Text="My Profile"
                    FontSize="26"
                    FontAttributes="Bold"
                    TextColor="{StaticResource Primary}" />
 
-            <Border BackgroundColor="#F9FAFB"
+            <Image Source="{Binding AvatarPhotoPath}"
+                   HeightRequest="140"
+                   WidthRequest="140"
+                   Aspect="AspectFill"
+                   HorizontalOptions="Center"
+                   IsVisible="{Binding HasAvatar}" />
+
+            <Label Text="Avatar: empty"
+                   HorizontalOptions="Center"
+                   TextColor="{StaticResource TextSecondary}"
+                   IsVisible="{Binding HasNoAvatar}" />
+
+            <Button Text="Edit Profile"
+                    BackgroundColor="{StaticResource Primary}"
+                    TextColor="White"
+                    CornerRadius="10"
+                    Clicked="OnEditProfileClicked" />
+
+            <Border BackgroundColor="{StaticResource CardBackground}"
                     Padding="14"
                     StrokeShape="RoundRectangle 12">
                 <VerticalStackLayout Spacing="8">
-                    <Label Text="{Binding Profile.FullName}" FontSize="22" FontAttributes="Bold" />
-                    <Label Text="{Binding Profile.Username}" TextColor="#6B7280" />
-                    <Label Text="{Binding Profile.FavoriteCar, StringFormat='Favorite Car: {0}'}" />
-                    <Label Text="{Binding Profile.MeetCount, StringFormat='Meets Joined: {0}'}" />
-                    <Label Text="{Binding Profile.Bio}" />
+                    <Label Text="{Binding FullNameDisplay}" FontSize="20" FontAttributes="Bold" />
+                    <Label Text="{Binding LocationDisplay}" />
+                    <Label Text="{Binding AgeDisplay}" />
+                    <Label Text="{Binding SocialLinksDisplay}" />
+                    <Label Text="{Binding PhoneNumberDisplay}" />
+                    <Label Text="{Binding CarDisplay}" />
+                    <Label Text="{Binding ShortDescriptionDisplay}" />
                 </VerticalStackLayout>
             </Border>
         </VerticalStackLayout>

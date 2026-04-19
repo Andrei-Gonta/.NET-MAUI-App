@@ -2,43 +2,62 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CarMeetApp.Pages.HomePage"
-             Title="Home">
+             Title="Home"
+             BackgroundColor="#111827">
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="16">
             <Label Text="Car Meet Hub"
-                   FontSize="30"
+                   FontSize="36"
                    FontAttributes="Bold"
-                   TextColor="{StaticResource Primary}" />
+                   TextColor="White" />
 
-            <Label Text="Upcoming Events"
-                   FontSize="20"
-                   FontAttributes="Bold" />
+            <Label Text="Bine ai venit in Car Meet Hub - locul unde pasiunea pentru masini prinde viata."
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="White"
+                   LineBreakMode="WordWrap" />
 
-            <CollectionView ItemsSource="{Binding UpcomingEvents}">
+            <Label Text="Car Meet Hub aduce impreuna comunitatea auto, oferindu-ti acces rapid la cele mai interesante evenimente, intalniri si experiente dedicate pasionatilor de automobile."
+                   FontSize="18"
+                   LineBreakMode="WordWrap"
+                   TextColor="White" />
+
+            <Label Text="Fie ca vrei sa descoperi ce urmeaza sau sa retraiesti momentele memorabile din intalnirile anterioare, aici ai totul la indemana. Evenimentele trecute au adunat zeci de participanti si masini impresionante, iar cele viitoare promit experiente si mai spectaculoase, locatii atent alese si o comunitate in continua crestere."
+                   FontSize="18"
+                   LineBreakMode="WordWrap"
+                   TextColor="White" />
+
+            <Label Text="Inscrie-te, participa si fa parte dintr-o retea dinamica unde fiecare eveniment este o oportunitate de a impartasi pasiunea pentru masini, de a descoperi modele unice si de a crea conexiuni reale."
+                   FontSize="18"
+                   LineBreakMode="WordWrap"
+                   TextColor="White" />
+
+            <Label Text="Galerie - Ultimele Evenimente"
+                   FontSize="24"
+                   FontAttributes="Bold"
+                   TextColor="White" />
+
+            <CollectionView ItemsSource="{Binding LatestEventPhotos}"
+                            HeightRequest="210">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Horizontal" ItemSpacing="12" />
+                </CollectionView.ItemsLayout>
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Border BackgroundColor="#F3F4F6"
-                                Padding="12"
-                                Margin="0,0,0,10"
+                        <Border BackgroundColor="#1F2937"
+                                Padding="8"
+                                WidthRequest="240"
                                 StrokeShape="RoundRectangle 12">
-                            <Grid ColumnDefinitions="*,Auto">
-                                <VerticalStackLayout Grid.Column="0" Spacing="6">
-                                    <Label Text="{Binding Title}" FontAttributes="Bold" FontSize="18" />
-                                    <Label Text="{Binding Location}" />
-                                    <Label Text="{Binding Date, StringFormat='Date: {0:dddd, MMM dd - h:mm tt}'}"
-                                           TextColor="#4B5563" />
-                                </VerticalStackLayout>
-                                
-                                <Button Grid.Column="1"
-                                        Text="Details"
-                                        BackgroundColor="{StaticResource Accent}"
-                                        TextColor="White"
-                                        CornerRadius="8"
-                                        Clicked="OnDetailsClicked"
-                                        CommandParameter="{Binding Id}"
-                                        VerticalOptions="Center"
-                                        Margin="10,0,0,0" />
-                            </Grid>
+                            <VerticalStackLayout Spacing="6">
+                                <Image Source="{Binding ImageUrl}"
+                                       HeightRequest="140"
+                                       Aspect="AspectFill" />
+                                <Label Text="{Binding Caption}"
+                                       FontAttributes="Bold"
+                                       FontSize="15"
+                                       TextColor="White"
+                                       LineBreakMode="TailTruncation" />
+                            </VerticalStackLayout>
                         </Border>
                     </DataTemplate>
                 </CollectionView.ItemTemplate>

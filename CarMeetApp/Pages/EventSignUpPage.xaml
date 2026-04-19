@@ -7,7 +7,7 @@
         <VerticalStackLayout Padding="20" Spacing="14">
             
             <Button Text="Back"
-                    BackgroundColor="#6B7280"
+                    BackgroundColor="#374151"
                     TextColor="White"
                     CornerRadius="8"
                     Clicked="OnBackClicked"
@@ -46,7 +46,7 @@
                     SelectedItem="{Binding SelectedGenerationName}"
                     SelectedIndexChanged="OnGenerationChanged" />
 
-            <Border BackgroundColor="#F3F4F6"
+            <Border BackgroundColor="{StaticResource CardBackground}"
                     Padding="10"
                     StrokeShape="RoundRectangle 10">
                 <VerticalStackLayout Spacing="4">
@@ -62,13 +62,13 @@
                     Clicked="OnUploadPhotosClicked" />
 
             <Label Text="{Binding CarPhotosCountText}"
-                   TextColor="#374151"
+                   TextColor="{StaticResource TextPrimary}"
                    FontAttributes="Bold" />
 
             <CollectionView ItemsSource="{Binding SelectedCarPhotoNames}">
                 <CollectionView.ItemTemplate>
                     <DataTemplate>
-                        <Label Text="{Binding}" FontSize="12" TextColor="#6B7280" />
+                        <Label Text="{Binding}" FontSize="12" TextColor="{StaticResource TextSecondary}" />
                     </DataTemplate>
                 </CollectionView.ItemTemplate>
             </CollectionView>
@@ -80,7 +80,7 @@
                     Clicked="OnSubmitClicked" />
 
             <Label Text="{Binding SignUpStatus}"
-                   TextColor="#047857"
+                   TextColor="{StaticResource TextPrimary}"
                    FontAttributes="Bold" />
         </VerticalStackLayout>
     </ScrollView>

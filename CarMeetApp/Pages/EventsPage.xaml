@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarMeetApp.Pages.EventsPage"
+             Title="Events">
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="16">
+            <Button Text="Back"
+                    BackgroundColor="#374151"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Clicked="OnBackClicked"
+                    HorizontalOptions="Start" />
+
+            <Label Text="Available Events"
+                   FontSize="28"
+                   FontAttributes="Bold"
+                   TextColor="{StaticResource TextPrimary}" />
+
+            <CollectionView ItemsSource="{Binding AvailableEvents}">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Border BackgroundColor="{StaticResource CardBackground}"
+                                Padding="12"
+                                Margin="0,0,0,10"
+                                StrokeShape="RoundRectangle 12">
+                            <VerticalStackLayout Spacing="6">
+                                <Label Text="{Binding Title}"
+                                       FontAttributes="Bold"
+                                       FontSize="18"
+                                       TextColor="{StaticResource TextPrimary}" />
+
+                                <Label Text="{Binding Date, StringFormat='Date: {0:dddd, MMM dd - h:mm tt}'}"
+                                       TextColor="{StaticResource TextSecondary}" />
+
+                                <Label Text="{Binding Location}"
+                                       TextColor="{StaticResource TextSecondary}" />
+
+                                <Button Text="Details"
+                                        BackgroundColor="{StaticResource Accent}"
+                                        TextColor="White"
+                                        CornerRadius="8"
+                                        Clicked="OnDetailsClicked"
+                                        CommandParameter="{Binding Id}" />
+                            </VerticalStackLayout>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

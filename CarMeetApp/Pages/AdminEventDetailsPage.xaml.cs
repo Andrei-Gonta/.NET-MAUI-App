@@ -1,4 +1,3 @@
-using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using CarMeetApp.Models;
 using CarMeetApp.Services;
@@ -6,19 +5,17 @@ using System.Collections.ObjectModel;
 
 namespace CarMeetApp.Pages;
 
-public partial class AdminEventDetailsPage : ContentPage, INotifyPropertyChanged
+public partial class AdminEventDetailsPage : ContentPage
 {
     private readonly DatabaseService _databaseService = new();
     private int _eventId;
     private EventItem? _event;
     private List<ParticipantViewModel> _participants = [];
 
-    public new event PropertyChangedEventHandler? PropertyChanged;
-
     public string EventTitle => _event?.Title ?? string.Empty;
     public string EventLocation => _event?.Location ?? string.Empty;
     public string EventDate => _event?.Date.ToString("dddd, MMMM d, yyyy 'at' h:mm tt") ?? string.Empty;
-    public string EventOrganizer => $"Organized by {_event?.Organizer ?? "Unknown"}";
+    public string EventOrganizer => $"Organized by {Normalize(_event?.Organizer, "Admin Team")}";
     public string EventDescription => _event?.Description ?? string.Empty;
     public string ParticipantsCount => $"{_participants.Count} Participant{_participants.Count.Pluralize()}";
     public bool HasNoParticipants => _participants.Count == 0;
@@ -119,8 +116,7 @@ public partial class AdminEventDetailsPage : ContentPage, INotifyPropertyChanged
     protected override void OnAppearing()
     {
         base.OnAppearing();
-        
-        // Check if user is admin
+
         if (UserSession.Role != UserRole.Admin)
         {
             DisplayAlert("Access Denied", "Only administrators can view event participants.", "OK").Wait();
@@ -128,16 +124,16 @@ public partial class AdminEventDetailsPage : ContentPage, INotifyPropertyChanged
         }
     }
 
-    private void SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
+    private async void OnBackClicked(object sender, EventArgs e)
     {
-        if (EqualityComparer<T>.Default.Equals(field, value))
+        if (Navigation.NavigationStack.Count > 1)
         {
-            return;
+            await Navigation.PopAsync();
         }
-
-        field = value;
-        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
+
+    private static string Normalize(string? value, string fallback) =>
+        string.IsNullOrWhiteSpace(value) ? fallback : value;
 }
 
 public class ParticipantViewModel

@@ -50,4 +50,12 @@ public partial class ParticipantCarPhotosPage : ContentPage
             await DisplayAlert("Error", $"Failed to load car pictures: {ex.Message}", "OK");
         }
     }
+
+    private async void OnBackClicked(object sender, EventArgs e)
+    {
+        if (Navigation.NavigationStack.Count > 1)
+        {
+            await Navigation.PopAsync();
+        }
+    }
 }

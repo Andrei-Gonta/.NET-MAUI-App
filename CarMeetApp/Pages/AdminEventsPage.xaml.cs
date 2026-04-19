@@ -19,7 +19,6 @@ public partial class AdminEventsPage : ContentPage
     {
         base.OnAppearing();
         
-        // Check if user is admin
         if (UserSession.Role != UserRole.Admin)
         {
             await DisplayAlert("Access Denied", "Only administrators can access this page.", "OK");
@@ -98,6 +97,14 @@ public partial class AdminEventsPage : ContentPage
         catch (Exception ex)
         {
             await DisplayAlert("Error", $"Failed to delete event: {ex.Message}", "OK");
+        }
+    }
+
+    private async void OnBackClicked(object sender, EventArgs e)
+    {
+        if (Navigation.NavigationStack.Count > 1)
+        {
+            await Navigation.PopAsync();
         }
     }
 }

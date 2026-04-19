@@ -156,6 +156,14 @@ public partial class AdminEditEventPage : ContentPage, INotifyPropertyChanged
         }
     }
 
+    private async void OnBackClicked(object sender, EventArgs e)
+    {
+        if (Navigation.NavigationStack.Count > 1)
+        {
+            await Navigation.PopAsync();
+        }
+    }
+
     private void SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = "")
     {
         if (EqualityComparer<T>.Default.Equals(field, value))

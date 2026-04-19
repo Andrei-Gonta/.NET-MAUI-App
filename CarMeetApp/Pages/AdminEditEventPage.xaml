@@ -5,6 +5,13 @@
              Title="Edit Event">
     <ScrollView>
         <VerticalStackLayout Padding="20" Spacing="12">
+            <Button Text="Back"
+                    BackgroundColor="#374151"
+                    TextColor="White"
+                    CornerRadius="8"
+                    Clicked="OnBackClicked"
+                    HorizontalOptions="Start" />
+
             <Label Text="Edit Event"
                    FontSize="26"
                    FontAttributes="Bold"
@@ -27,7 +34,7 @@
 
             <Label Text="{Binding StatusMessage}"
                    FontAttributes="Bold"
-                   TextColor="#047857" />
+                   TextColor="{StaticResource TextPrimary}" />
         </VerticalStackLayout>
     </ScrollView>
 </ContentPage>

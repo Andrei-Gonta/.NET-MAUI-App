@@ -1,14 +1,12 @@
-﻿using System;
+using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace CarMeetApp.Migrations
 {
-    /// <inheritdoc />
     public partial class AddOtherDetails : Migration
     {
-        /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<string>(
@@ -49,7 +47,6 @@ namespace CarMeetApp.Migrations
                 value: new DateTime(2026, 4, 18, 14, 29, 31, 188, DateTimeKind.Utc).AddTicks(152));
         }
 
-        /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropColumn(
