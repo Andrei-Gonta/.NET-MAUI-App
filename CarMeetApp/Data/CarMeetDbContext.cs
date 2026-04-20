@@ -52,38 +52,5 @@ public class CarMeetDbContext : DbContext
             .HasOne(eu => eu.User)
             .WithMany(u => u.EventUsers)
             .HasForeignKey(eu => eu.UserId);
-
-        modelBuilder.Entity<EventItem>().HasData(
-            new EventItem
-            {
-                Id = 1,
-                Title = "Sunset Street Meet",
-                Location = "Downtown Garage, Austin",
-                Date = DateTime.Today.AddDays(3).AddHours(18),
-                Organizer = "Turbo Club",
-                Description = "Casual evening meet for all builds: imports, muscle, and classics.",
-                CreatedAt = DateTime.UtcNow
-            },
-            new EventItem
-            {
-                Id = 2,
-                Title = "Mountain Drive Meetup",
-                Location = "Blue Ridge Scenic Point",
-                Date = DateTime.Today.AddDays(7).AddHours(9),
-                Organizer = "Apex Riders",
-                Description = "Morning cruise with photo stops and coffee at the summit.",
-                CreatedAt = DateTime.UtcNow
-            },
-            new EventItem
-            {
-                Id = 3,
-                Title = "Neon Night Showcase",
-                Location = "Riverside Plaza, Seattle",
-                Date = DateTime.Today.AddDays(14).AddHours(20),
-                Organizer = "NightShift Garage",
-                Description = "Night showcase featuring custom lighting and audio builds.",
-                CreatedAt = DateTime.UtcNow
-            }
-        );
     }
 }

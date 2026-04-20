@@ -10,9 +10,6 @@
                    FontAttributes="Bold"
                    TextColor="{StaticResource Primary}" />
 
-            <Label Text="Sign in with Firebase. Regular users end with @email.com, admins end with @admin.com."
-                   TextColor="{StaticResource TextSecondary}" />
-
             <Entry Placeholder="Email" Keyboard="Email" Text="{Binding Email}" />
             <Entry Placeholder="Password" IsPassword="True" Text="{Binding Password}" />
 

@@ -15,6 +15,7 @@ public class DatabaseService
         _context.Database.EnsureCreated();
         EnsureEventUserPhotoColumn();
         EnsureUserProfileColumns();
+        RemovePredefinedEvents();
     }
 
     public DatabaseService(CarMeetDbContext context)
@@ -22,6 +23,7 @@ public class DatabaseService
         _context = context;
         EnsureEventUserPhotoColumn();
         EnsureUserProfileColumns();
+        RemovePredefinedEvents();
     }
 
     public async Task<List<EventItem>> GetEventsAsync()
@@ -251,6 +253,37 @@ public class DatabaseService
         try
         {
             _context.Database.ExecuteSqlRaw(sql);
+        }
+        catch
+        {
+        }
+    }
+
+    private void RemovePredefinedEvents()
+    {
+        try
+        {
+            _context.Database.ExecuteSqlRaw("""
+                UPDATE Users
+                SET EventItemId = NULL
+                WHERE EventItemId IN (
+                    SELECT Id FROM Events
+                    WHERE Title IN ('Sunset Street Meet', 'Mountain Drive Meetup', 'Neon Night Showcase')
+                );
+                """);
+
+            _context.Database.ExecuteSqlRaw("""
+                DELETE FROM EventUsers
+                WHERE EventId IN (
+                    SELECT Id FROM Events
+                    WHERE Title IN ('Sunset Street Meet', 'Mountain Drive Meetup', 'Neon Night Showcase')
+                );
+                """);
+
+            _context.Database.ExecuteSqlRaw("""
+                DELETE FROM Events
+                WHERE Title IN ('Sunset Street Meet', 'Mountain Drive Meetup', 'Neon Night Showcase');
+                """);
         }
         catch
         {
