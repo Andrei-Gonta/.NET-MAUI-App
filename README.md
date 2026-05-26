@@ -14,7 +14,7 @@ The application also includes an **admin area**, where administrators can create
 - 📸 **Car Photo Upload** – Users can upload up to 5 photos of their car when registering for an event.
 - 👤 **User Profile Management** – Users can view and edit profile information, including avatar, phone number, location, social links, and car description.
 - 🔐 **Authentication System** – Login is handled through Firebase Authentication using email and password.
-- 🧑‍💼 **Role-Based Navigation** – The app displays different pages depending on the user role: regular user or administrator.
+- 🧑‍💼 **Role-Based Navigation** – The app displays different pages depending on the user role: regular user or administrator. Use **"participant@email.com"** for user role or **"organizator@admin.com"** for admin role. Password: "123456"
 - 🛠 **Admin Event Management** – Admin users can add, edit, delete, and inspect events and participants.
 - 📋 **Participant Review** – Admin users can view participants registered for each event and inspect their uploaded car photos.
 - 📱 **User-Friendly Interface** – The UI uses simple pages, card-based layouts, forms, lists, and a dark visual theme.
